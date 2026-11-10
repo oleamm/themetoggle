@@ -1,0 +1,22 @@
+# Rust/Cargo build output
+/target/
+
+# Local release artifacts; the CI package is reproducible from source
+/dist/
+
+# Local logs
+/logs/
+/.filetools-logs/
+
+# IDE and editor files
+/.idea/
+/.vscode/
+*.user
+*.suo
+*.swp
+*.swo
+
+# Operating-system files
+Thumbs.db
+Desktop.ini
+.DS_Store

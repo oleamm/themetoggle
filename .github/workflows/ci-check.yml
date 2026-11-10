@@ -1,0 +1,18 @@
+name: ci-check
+
+on:
+  push:
+    branches: ["fix/**"]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Test
+        run: cargo test --all-targets
+      - name: Build release
+        run: cargo build --release
