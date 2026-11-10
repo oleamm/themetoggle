@@ -135,7 +135,7 @@ impl Key {
 
     fn write_dword(&self, name: PCWSTR, value: u32) -> windows::core::Result<()> {
         let bytes = value.to_ne_bytes();
-        unsafe { RegSetValueExW(self.0, name, Some(0), REG_DWORD, Some(&bytes)).ok() }
+        unsafe { RegSetValueExW(self.0, name, Some(0), REG_DWORD, Some(bytes.as_slice())).ok() }
     }
 }
 

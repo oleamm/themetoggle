@@ -12,9 +12,10 @@ winresource = "0.1.31"
 tray-icon = "0.24"
 anyhow = "1"
 png = "0.18"
-log = "0.4"
+log = { version = "0.4", features = ["std"] }
 windows = { version = "0.62", features = [
     "Win32_Foundation",
+    "Win32_Security",
     "Win32_System_Registry",
     "Win32_System_Threading",
     "Win32_UI_WindowsAndMessaging",
