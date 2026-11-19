@@ -1,29 +1,103 @@
+<div align="center">
+
 # ThemeToggle
 
-A single-icon Windows tray app that flips the system between the light and the
-dark appearance on one click, so the Settings app is never needed for it.
+### One click to switch Windows between light and dark mode
 
-- **Left click** the tray icon → light ⇄ dark.
-- **Right click** → small menu: switch theme, start with Windows, quit.
-- The icon always shows the current appearance (sun = light, moon = dark) and
-  is coloured for the taskbar it is drawn on, so it never disappears into it.
-- No admin rights, no service, no background polling of the shell: one process,
-  one thread, one message loop.
+No Settings app, no Personalization → Colors, no restart. A single icon in the
+notification area flips the taskbar, the Start menu and every open application
+at once.
+
+[![Download for Windows](https://img.shields.io/badge/⬇_Download-Windows_x64-2f6feb?style=for-the-badge)](https://github.com/oleamm/themetoggle/releases/latest)
+
+[![Latest release](https://img.shields.io/github/v/release/oleamm/themetoggle?label=release&color=2f6feb)](https://github.com/oleamm/themetoggle/releases/latest)
+[![Build](https://github.com/oleamm/themetoggle/actions/workflows/windows-release.yml/badge.svg)](https://github.com/oleamm/themetoggle/actions/workflows/windows-release.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+![Platform](https://img.shields.io/badge/platform-Windows%2010%20%7C%2011-0078D6)
+
+**Windows 10 / 11 · x64 · single .exe · no installer · no admin rights**
+
+</div>
+
+---
+
+<img src="docs/screenshots/tray-dark.png" alt="ThemeToggle in the Windows notification area" width="810">
+
+<img src="docs/screenshots/menu-dark.png" alt="ThemeToggle right-click menu" width="770">
+
+<img src="docs/screenshots/tray-light.png" alt="ThemeToggle after switching to the light theme" width="952">
+
+---
 
 ## Why
 
-Changing the Windows theme by hand takes Settings → Personalization → Colors →
-“Choose your mode”. This app puts that switch one click away, permanently
-visible next to the clock.
+Changing the Windows appearance by hand is a five-step trip through
+**Settings → Personalization → Colors → Choose your mode → pick one**, and then
+you have to do it again in the evening. Many people switch twice a day.
+
+ThemeToggle reduces that to one left click on an icon that is always next to
+the clock.
+
+## Features
+
+- **One click, whole system.** Taskbar, Start menu, Action Center and every open
+  app change appearance together — no sign-out, no Explorer restart.
+- **The icon tells the truth.** Sun on a light taskbar, moon on a dark one, and
+  it is recoloured for the taskbar it sits on so it never blends in. If the
+  theme is changed somewhere else, the icon follows within two seconds.
+- **Right-click menu:** switch theme · start with Windows · quit.
+- **Tiny and quiet.** One process, one thread, no service, no background
+  scanning, ~460 KB executable.
+- **No admin rights.** Only your own user settings are touched.
+- **Single instance.** A second copy refuses to start instead of fighting the
+  first one over the same settings.
+
+## Install
+
+1. **[Download `ThemeToggle-windows-x64.zip`](https://github.com/oleamm/themetoggle/releases/latest)**
+   and unpack `ThemeToggle.exe` anywhere you like (`C:\Apps` works fine).
+2. Run it. The icon appears in the notification area.
+3. Optional: right-click the icon → **Start with Windows**.
+
+There is nothing to install and nothing to configure. To uninstall, quit from
+the menu, turn autostart off if you enabled it, and delete the file.
+
+> **Keep the icon visible.** Windows puts new tray icons into the overflow
+> flyout by default. Drag the icon onto the taskbar, or enable it under
+> *Settings → Personalization → Taskbar → Other system tray icons*.
+
+## Usage
+
+| Action | Result |
+| --- | --- |
+| **Left click** the icon | light ⇄ dark, immediately |
+| **Right click** the icon | menu: switch theme, start with Windows, quit |
+
+A double click is treated as one click on purpose — a double click would
+otherwise switch twice and appear to do nothing.
+
+## FAQ
+
+**Does it need administrator rights?** No. It writes only to your own user
+settings, never to machine-wide ones.
+
+**Will it change my accent colour, wallpaper or transparency?** No. Only the
+light/dark mode pair.
+
+**I have a custom setup (light apps, dark taskbar). What happens?** The app
+keeps apps and shell in sync, so one click always yields a consistent theme —
+that is the point of the button. The icon itself still follows the taskbar
+colour, so it stays readable either way.
+
+**My taskbar did not repaint after switching.** Rare, and a known Windows
+quirk: the notification is delivered but Explorer occasionally ignores it.
+Click again, or restart Explorer (`Task Manager → Windows Explorer → Restart`).
+Everything else — Start menu, open apps — updates immediately.
+
+**Does it phone home?** No. There is no network code at all. See
+[Privacy](#privacy).
 
 ## How it works
-
-<img width="810" height="188" alt="image" src="https://github.com/user-attachments/assets/f7a7ecf8-78af-4fcf-8884-25d18991edf0" />
-
-<img width="770" height="312" alt="image" src="https://github.com/user-attachments/assets/5a42286d-0c02-4935-845d-c4f735adb4d9" />
-
-<img width="952" height="226" alt="image" src="https://github.com/user-attachments/assets/4a61450f-35e9-41a2-bf7f-75ad59c7ce45" />
-
 
 Windows stores the per-user appearance in the registry:
 
@@ -33,7 +107,7 @@ Windows stores the per-user appearance in the registry:
 | `HKCU\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize\SystemUsesLightTheme` | taskbar, Start, Action Center |
 
 `0` is dark, `1` is light. Writing those values alone does not repaint anything:
-running programs only re-read them when they receive `WM_SETTINGCHANGE` with
+running programs re-read them only when they receive `WM_SETTINGCHANGE` with
 `lParam = "ImmersiveColorSet"` — the exact broadcast the Settings app sends. So
 the app writes both values and broadcasts that message, which is why open apps
 switch immediately instead of after a sign-out.
@@ -41,78 +115,51 @@ switch immediately instead of after a sign-out.
 The same values are read back to draw the icon, and a 2-second thread timer
 keeps the icon in sync if the theme is changed somewhere else.
 
-## Install
+Internals: `src/theme.rs` (registry + broadcast), `src/tray.rs` (icon, menu and
+the Win32 message loop), `src/icons.rs` (embedded glyphs), `src/autostart.rs`,
+`src/instance.rs`, `src/logfile.rs`. Design notes live in
+[docs/architecture.md](docs/architecture.md).
 
-1. Download `ThemeToggle-windows-x64.zip` from the latest successful
-   [Actions run](/actions/workflows/windows-release.yml) and unpack
-   `ThemeToggle.exe` anywhere you like.
-2. Run it. The icon appears in the notification area.
-3. Optional: enable **Start with Windows** in the right-click menu.
+## Privacy
 
-> Windows hides new tray icons in the “hidden icons” flyout by default. Drag the
-> icon onto the taskbar (or enable it in Settings → Personalization → Taskbar →
-> Other system tray icons) to keep it visible.
+- No network access, no telemetry, no analytics, no update checks.
+- Reads and writes exactly the two registry values listed above, plus the
+  optional per-user autostart entry under
+  `HKCU\Software\Microsoft\Windows\CurrentVersion\Run`.
+- Writes one local log file, `%LOCALAPPDATA%\ThemeToggle\logs\themetoggle.log`
+  (rotated at 1 MiB), so a tray app without a console can still be debugged.
+  Set `THEMETOGGLE_LOG=debug` for more detail, `off` to keep it silent.
 
-### Uninstall
+## Build from source
 
-Quit from the menu, turn **Start with Windows** off first if it was on, then
-delete the executable. The app writes nothing else except its log file
-(`%LOCALAPPDATA%\ThemeToggle\logs\themetoggle.log`) and the registry values
-listed above — which are the same values the Settings app itself owns, so they
-are left at whatever theme you had last.
-
-## Build
-
-Requirements: Rust stable, MSVC build tools (the usual Windows Rust setup).
+Requirements: Rust stable with the MSVC toolchain.
 
 ```bat
-build.bat                 :: debug build
-build_release.bat         :: release build staged as dist\ThemeToggle.exe
-run_tests.bat             :: cargo test --all-targets
+build_release.bat     :: release build staged as dist\ThemeToggle.exe
+run_tests.bat         :: cargo test --all-targets
 ```
 
-Or plainly:
+Or directly:
 
 ```
 cargo build --release
 cargo test --all-targets
 ```
 
-`build.rs` embeds `assets/themetoggle.ico` and `app.manifest` into the binary and
-bakes a build id (`version+commit.timestamp`) into it; the id is written to the
-log on every start, so a shipped .exe can be traced back to a commit.
+`build.rs` embeds the icon and the application manifest into the binary and
+bakes a build id (`version+commit.timestamp`) into it, which is written to the
+log on every start — so a shipped `.exe` can be traced back to a commit.
 
-## CI
+The tray and application icons are generated, not borrowed:
+`tools/make_icons.py` rasterises the sun, the moon and the multi-size `.ico`
+analytically, without any imaging library.
+
+### CI
 
 | Workflow | Trigger | What it does |
 | --- | --- | --- |
-| `windows-release.yml` | push to `main`, manual | tests, release build, uploads `ThemeToggle-windows-x64.zip` + `ThemeToggle.exe` |
-| `ci-check.yml` | push to `fix/**`, pull requests, manual | tests, release build |
-
-## Behaviour details
-
-- **Single instance.** A named mutex keeps a second copy from adding a second
-  icon that would fight the first one over the same registry values.
-- **Double clicks.** A double click sends two button-up events; clicks closer
-  than 400 ms are ignored so the theme does not flip twice.
-- **Logging.** `%LOCALAPPDATA%\ThemeToggle\logs\themetoggle.log`, rotated at
-  1 MiB. Set `THEMETOGGLE_LOG=debug` (or `trace`, `warn`, `off`) for more or
-  less detail.
-- **Icons** are generated, not borrowed: `tools/make_icons.py` renders the sun,
-  the moon and the application icon analytically (4×4 supersampling, no imaging
-  library) and writes both PNGs plus the multi-size `.ico`.
-
-## Repository layout
-
-```
-src/main.rs        entry point, fatal-error box
-src/tray.rs        tray icon, context menu, Win32 message pump
-src/theme.rs       registry read/write + WM_SETTINGCHANGE broadcast
-src/icons.rs       embedded PNG glyphs, RGBA decode
-src/autostart.rs   per-user Run key handling
-src/instance.rs    single-instance mutex
-src/logfile.rs     file logger with rotation
-```
+| `windows-release.yml` | push to `main`, tag `v*`, manual | tests, release build, uploads the build artifact, publishes a GitHub release for tags |
+| `ci-check.yml` | pull requests, `fix/**`, manual | tests, release build |
 
 ## License
 
