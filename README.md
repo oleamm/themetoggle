@@ -18,6 +18,13 @@ visible next to the clock.
 
 ## How it works
 
+<img width="810" height="188" alt="image" src="https://github.com/user-attachments/assets/f7a7ecf8-78af-4fcf-8884-25d18991edf0" />
+
+<img width="770" height="312" alt="image" src="https://github.com/user-attachments/assets/5a42286d-0c02-4935-845d-c4f735adb4d9" />
+
+<img width="952" height="226" alt="image" src="https://github.com/user-attachments/assets/4a61450f-35e9-41a2-bf7f-75ad59c7ce45" />
+
+
 Windows stores the per-user appearance in the registry:
 
 | Value | Drives |
