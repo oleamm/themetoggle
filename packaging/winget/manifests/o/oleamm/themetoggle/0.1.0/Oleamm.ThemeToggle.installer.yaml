@@ -1,0 +1,16 @@
+PackageIdentifier: Oleamm.ThemeToggle
+PackageVersion: 0.1.0
+InstallerType: zip
+NestedInstallerType: portable
+NestedInstallerFiles:
+  - RelativeFilePath: ThemeToggle.exe
+    PortableCommandAlias: themetoggle
+Scope: user
+Installers:
+  - Architecture: x64
+    InstallerUrl: https://github.com/oleamm/themetoggle/releases/download/v0.1.0/ThemeToggle-windows-x64.zip
+    InstallerSha256: e52d7073c594a676ffd226df7614978d04b1f6905ba4347d8a8920bc7c5501c4
+    InstallerLocale: en-US
+    ElevationRequirement: elevationProhibited
+ManifestType: installer
+ManifestVersion: 1.6.0

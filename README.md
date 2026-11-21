@@ -19,13 +19,26 @@ at once.
 
 </div>
 
+> [!WARNING]
+> **First run: “Windows protected your PC” is expected — click *More info* → *Run anyway*.**
+> The executable is not code-signed (a signing certificate costs money), and SmartScreen
+> flags every unsigned binary it has never seen. There is nothing else to accept or install.
+> The build comes straight from this repository's GitHub Actions run; you can rebuild it
+> yourself with `cargo build --release` and compare SHA-256 hashes with the release notes.
+
 ---
 
-<img src="docs/screenshots/tray-dark.png" alt="ThemeToggle in the Windows notification area" width="810">
+<img src="docs/screenshots/tray-dark.png" alt="Moon icon in the Windows notification area on a dark taskbar" width="810">
 
-<img src="docs/screenshots/menu-dark.png" alt="ThemeToggle right-click menu" width="770">
+*Dark theme — the moon sits next to the clock; the arrow points at it.*
 
-<img src="docs/screenshots/tray-light.png" alt="ThemeToggle after switching to the light theme" width="952">
+<img src="docs/screenshots/menu-dark.png" alt="Right-click menu with Switch to light theme, Start with Windows and Quit ThemeToggle" width="770">
+
+*Right click — switch to the other theme, turn autostart on, quit.*
+
+<img src="docs/screenshots/tray-light.png" alt="Sun icon in the notification area on a light taskbar, with the tooltip ThemeToggle light theme, click to switch to dark" width="952">
+
+*After the click — the glyph turns into a sun and the tooltip tells you what the next click will do.*
 
 ---
 
@@ -56,7 +69,8 @@ the clock.
 
 1. **[Download `ThemeToggle-windows-x64.zip`](https://github.com/oleamm/themetoggle/releases/latest)**
    and unpack `ThemeToggle.exe` anywhere you like (`C:\Apps` works fine).
-2. Run it. The icon appears in the notification area.
+2. Run it (first launch shows the SmartScreen prompt described above — *More info* →
+   *Run anyway*). The icon appears in the notification area.
 3. Optional: right-click the icon → **Start with Windows**.
 
 There is nothing to install and nothing to configure. To uninstall, quit from
