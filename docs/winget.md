@@ -19,7 +19,7 @@ footprint, the executable lands in
 ## What is prepared here
 
 The three manifests live in
-`packaging/winget/manifests/o/oleamm/themetoggle/0.1.0/` — the exact layout the
+`packaging/winget/manifests/o/Oleamm/ThemeToggle/0.1.0/` — the exact layout the
 `winget-pkgs` repository expects:
 
 | File | Purpose |
@@ -36,7 +36,7 @@ They are validated against the official Microsoft schemas
 
 1. Fork `microsoft/winget-pkgs`.
 2. Copy the folder so that it becomes
-   `manifests/o/oleamm/themetoggle/0.1.0/` in the fork (same three files).
+   `manifests/o/Oleamm/ThemeToggle/0.1.0/` in the fork (same three files).
 3. Commit, push, open a pull request titled
    `New package: Oleamm.ThemeToggle version 0.1.0`.
 4. The `Microsoft CLA` bot comments on the PR — sign it once (one click with
@@ -49,7 +49,7 @@ On Windows you can do steps 1–3 in one command with
 [wingetcreate](https://github.com/microsoft/winget-create):
 
 ```powershell
-wingetcreate submit --path packaging\winget\manifests\o\oleamm\themetoggle\0.1.0
+wingetcreate submit --path packaging\winget\manifests\o\Oleamm\ThemeToggle\0.1.0
 ```
 
 ## Testing locally before submitting
@@ -57,8 +57,8 @@ wingetcreate submit --path packaging\winget\manifests\o\oleamm\themetoggle\0.1.0
 On a Windows machine with winget:
 
 ```powershell
-winget validate --manifest packaging\winget\manifests\o\oleamm\themetoggle\0.1.0
-winget install --manifest packaging\winget\manifests\o\oleamm\themetoggle\0.1.0
+winget validate --manifest packaging\winget\manifests\o\Oleamm\ThemeToggle\0.1.0
+winget install --manifest packaging\winget\manifests\o\Oleamm\ThemeToggle\0.1.0
 winget uninstall Oleamm.ThemeToggle
 ```
 
@@ -66,7 +66,7 @@ winget uninstall Oleamm.ThemeToggle
 
 1. Bump `version` in `Cargo.toml`, commit, tag `vX.Y.Z`, push the tag — CI
    builds and attaches the zip to the release.
-2. Create `packaging/winget/manifests/o/oleamm/themetoggle/X.Y.Z/` by copying the
+2. Create `packaging/winget/manifests/o/Oleamm/ThemeToggle/X.Y.Z/` by copying the
    previous version and changing in all three files:
    - `PackageVersion: X.Y.Z`
    - `InstallerUrl` → `.../download/vX.Y.Z/ThemeToggle-windows-x64.zip`
