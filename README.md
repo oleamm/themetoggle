@@ -175,6 +175,9 @@ analytically, without any imaging library.
 | `windows-release.yml` | push to `main`, tag `v*`, manual | tests, release build, uploads the build artifact, publishes a GitHub release for tags |
 | `ci-check.yml` | pull requests, `fix/**`, manual | tests, release build |
 
+Packaging for [winget](docs/winget.md) lives in `packaging/winget/` and is
+ready to be submitted to `microsoft/winget-pkgs`.
+
 ## License
 
 MIT — see [LICENSE](LICENSE).
