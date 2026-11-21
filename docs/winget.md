@@ -29,7 +29,7 @@ The three manifests live in
 | `Oleamm.ThemeToggle.locale.en-US.yaml` | name, publisher, description, license, tags |
 
 They are validated against the official Microsoft schemas
-(`manifest.*.1.6.0.json` from
+(`manifest.*.1.28.0.json` from
 [winget-cli/schemas](https://github.com/microsoft/winget-cli/tree/master/schemas/JSON/manifests)).
 
 ## Submitting (one-time, needs your GitHub account)
